@@ -33,6 +33,7 @@ all:
 #	@cp backup/server_server.c .
 $(RPCGEN): $(SOURCES.x)
 	@rpcgen $(RPCGENFLAGS) $(SOURCES.x)
+	@rpcgen -CNM -s tcp server.x > server_svc.c
 	@echo "generated RPC files"
 
 $(TARGETS_SVC.c) : $(RPCGEN)
