@@ -114,8 +114,10 @@ int handle_delete() {
     printf("Input key: ");
     scanf("%d", &key);
     if (delete_key(key) < 0) {
+        printf("Error deleting key.\n");
         return -1;
     }
+    printf("Key deleted.\n");
     return 0;
 }
 
@@ -164,7 +166,7 @@ int handle_modify() {
 void handle_arguments(int argc, char *argv[]) {
     if (argc != 1) {
         if (strcmp(argv[1], "init") == 0) {
-            if (create_socket() < 0) {
+            if (start_service("localhost") < 0) {
                 exit(-1);
             };
             exit(handle_init());  // we can use handle_init since it doesn't ask for user input
@@ -177,7 +179,7 @@ void handle_arguments(int argc, char *argv[]) {
                 printf("Usage: ./client get <key>\n");
                 exit(-1);
             }
-            if (create_socket() < 0) {
+            if (start_service("localhost") < 0) {
                 exit(-1);
             };
             int key = atoi(argv[2]);
@@ -197,7 +199,7 @@ void handle_arguments(int argc, char *argv[]) {
             }
             printf("\n");
         } else if (strcmp(argv[1], "exit") == 0) {
-            if (create_socket() < 0) {
+            if (start_service("localhost") < 0) {
                 exit(-1);
             };
             exit(close_server());
@@ -210,7 +212,7 @@ void handle_arguments(int argc, char *argv[]) {
                 printf("Usage: ./client delete <key>\n");
                 exit(-1);
             }
-            if (create_socket() < 0) {
+            if (start_service("localhost") < 0) {
                 exit(-1);
             };
             int key = atoi(argv[2]);
@@ -224,7 +226,7 @@ void handle_arguments(int argc, char *argv[]) {
                 printf("Usage: ./client exist <key>\n");
                 exit(-1);
             }
-            if (create_socket() < 0) {
+            if (start_service("localhost") < 0) {
                 exit(-1);
             };
             int key = atoi(argv[2]);
@@ -264,7 +266,7 @@ void handle_arguments(int argc, char *argv[]) {
                 }
                 V_Value2[i] = atof(argv[5+i]);
             }
-            if (create_socket() < 0) {
+            if (start_service("localhost") < 0) {
                 exit(1);
             };
             sleep(0.1);
@@ -297,7 +299,7 @@ void handle_arguments(int argc, char *argv[]) {
                 }
                 V_Value2[i] = atof(argv[5+i]);
             }
-            if (create_socket() < 0) {
+            if (start_service("localhost") < 0) {
                 exit(1);
             };
             sleep(0.1);
@@ -317,7 +319,7 @@ int main (int argc, char *argv[]) {
     handle_arguments(argc, argv);
     printf("Welcome to the tuple management system, user input mode.\n");
     while (1) {
-        if (create_socket() < 0) {
+        if (start_service("localhost") < 0) {
             exit(-1);
         }
         char operation[10];

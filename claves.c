@@ -34,7 +34,7 @@ int start_service(char *host) {
 }
 
 int init () {
-	bool_t retval_1 = init_1(&result_1, clnt);
+	bool_t retval_1 = init_server_1(&result_1, clnt);
 	if (retval_1 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
         return -1;
@@ -43,8 +43,11 @@ int init () {
 }
 
 int set_value(int key, char *value1, int N_value2, double *V_value2) {
-    set_value_1_given_tuple = (struct tuple){key, value1, N_value2, V_value2};
-	retval_3 = set_value_1(set_value_1_given_tuple, &result_3, clnt);
+	set_value_1_given_tuple.key = key;
+	strcpy(set_value_1_given_tuple.value1, value1);
+	set_value_1_given_tuple.N_value2 = N_value2;
+	memcpy(set_value_1_given_tuple.V_value2, V_value2, N_value2 * sizeof(double));
+	retval_3 = set_tuple_1(set_value_1_given_tuple, &result_3, clnt);
 	if (retval_3 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
         return -1;
@@ -53,7 +56,7 @@ int set_value(int key, char *value1, int N_value2, double *V_value2) {
 }
 
 int get_value(int key, char *value1, int *N_value2, double *V_value2) {
-	retval_4 = get_value_1(get_value_1_key, &result_4, clnt);
+	retval_4 = get_tuple_1(get_value_1_key, &result_4, clnt);
 	if (retval_4 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
         return -1;
@@ -62,7 +65,7 @@ int get_value(int key, char *value1, int *N_value2, double *V_value2) {
 }
 
 int modify_value(int key, char *value1, int N_value2, double *V_value2) {
-	retval_5 = modify_value_1(modify_value_1_given_tuple, &result_5, clnt);
+	retval_5 = modify_tuple_1(modify_value_1_given_tuple, &result_5, clnt);
 	if (retval_5 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
         return -1;
@@ -72,7 +75,7 @@ int modify_value(int key, char *value1, int N_value2, double *V_value2) {
 }
 
 int delete_key(int key) {
-	retval_6 = delete_key_1(delete_key_1_key, &result_6, clnt);
+	retval_6 = delete_tuple_1(delete_key_1_key, &result_6, clnt);
 	if (retval_6 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
         return -1;

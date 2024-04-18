@@ -15,6 +15,12 @@ extern "C" {
 #endif
 
 #define VERNUM 1
+#define INITVER 1
+#define EXISTVER 2
+#define SETVER 3
+#define GETVER 4
+#define MODIFYVER 5
+#define DELETEVER 6
 
 typedef double vector_32[32];
 
@@ -30,45 +36,45 @@ typedef struct tuple tuple;
 #define VERNUM 1
 
 #if defined(__STDC__) || defined(__cplusplus)
-#define init 1
-extern  enum clnt_stat init_1(void *, CLIENT *);
-extern  bool_t init_1_svc(void *, struct svc_req *);
-#define exists 2
+#define init_server INITVER
+extern  enum clnt_stat init_server_1(void *, CLIENT *);
+extern  bool_t init_server_1_svc(void *, struct svc_req *);
+#define exists EXISTVER
 extern  enum clnt_stat exists_1(int , int *, CLIENT *);
 extern  bool_t exists_1_svc(int , int *, struct svc_req *);
-#define set_value 3
-extern  enum clnt_stat set_value_1(struct tuple , void *, CLIENT *);
-extern  bool_t set_value_1_svc(struct tuple , void *, struct svc_req *);
-#define get_value 4
-extern  enum clnt_stat get_value_1(int , struct tuple *, CLIENT *);
-extern  bool_t get_value_1_svc(int , struct tuple *, struct svc_req *);
-#define modify_value 5
-extern  enum clnt_stat modify_value_1(struct tuple , void *, CLIENT *);
-extern  bool_t modify_value_1_svc(struct tuple , void *, struct svc_req *);
-#define delete_key 6
-extern  enum clnt_stat delete_key_1(int , void *, CLIENT *);
-extern  bool_t delete_key_1_svc(int , void *, struct svc_req *);
+#define set_tuple SETVER
+extern  enum clnt_stat set_tuple_1(struct tuple , void *, CLIENT *);
+extern  bool_t set_tuple_1_svc(struct tuple , void *, struct svc_req *);
+#define get_tuple GETVER
+extern  enum clnt_stat get_tuple_1(int , struct tuple *, CLIENT *);
+extern  bool_t get_tuple_1_svc(int , struct tuple *, struct svc_req *);
+#define modify_tuple MODIFYVER
+extern  enum clnt_stat modify_tuple_1(struct tuple , void *, CLIENT *);
+extern  bool_t modify_tuple_1_svc(struct tuple , void *, struct svc_req *);
+#define delete_tuple DELETEVER
+extern  enum clnt_stat delete_tuple_1(int , void *, CLIENT *);
+extern  bool_t delete_tuple_1_svc(int , void *, struct svc_req *);
 extern int server_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
-#define init 1
-extern  enum clnt_stat init_1();
-extern  bool_t init_1_svc();
-#define exists 2
+#define init_server INITVER
+extern  enum clnt_stat init_server_1();
+extern  bool_t init_server_1_svc();
+#define exists EXISTVER
 extern  enum clnt_stat exists_1();
 extern  bool_t exists_1_svc();
-#define set_value 3
-extern  enum clnt_stat set_value_1();
-extern  bool_t set_value_1_svc();
-#define get_value 4
-extern  enum clnt_stat get_value_1();
-extern  bool_t get_value_1_svc();
-#define modify_value 5
-extern  enum clnt_stat modify_value_1();
-extern  bool_t modify_value_1_svc();
-#define delete_key 6
-extern  enum clnt_stat delete_key_1();
-extern  bool_t delete_key_1_svc();
+#define set_tuple SETVER
+extern  enum clnt_stat set_tuple_1();
+extern  bool_t set_tuple_1_svc();
+#define get_tuple GETVER
+extern  enum clnt_stat get_tuple_1();
+extern  bool_t get_tuple_1_svc();
+#define modify_tuple MODIFYVER
+extern  enum clnt_stat modify_tuple_1();
+extern  bool_t modify_tuple_1_svc();
+#define delete_tuple DELETEVER
+extern  enum clnt_stat delete_tuple_1();
+extern  bool_t delete_tuple_1_svc();
 extern int server_1_freeresult ();
 #endif /* K&R C */
 

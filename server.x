@@ -1,4 +1,10 @@
 const VERNUM = 1;
+const INITVER = 1;
+const EXISTVER = 2;
+const SETVER = 3;
+const GETVER = 4;
+const MODIFYVER = 5;
+const DELETEVER = 6;
 
 typedef double vector_32[32];
 
@@ -11,11 +17,11 @@ struct tuple {
 
 program server {
     version VERNUM {
-        void init() = 1;
-        int exists(int key) = 2;
-        void set_value(struct tuple given_tuple) = 3;
-        struct tuple get_value(int key) = 4;
-        void modify_value(struct tuple given_tuple) = 5;
-        void delete_key(int key) = 6;
+        void init_server() = INITVER;
+        int exists(int key) = EXISTVER;
+        void set_tuple(struct tuple given_tuple) = SETVER;
+        struct tuple get_tuple(int key) = GETVER;
+        void modify_tuple(struct tuple given_tuple) = MODIFYVER;
+        void delete_tuple(int key) = DELETEVER;
     } = 1;
 } = 1;

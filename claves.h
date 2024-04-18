@@ -11,6 +11,8 @@
  */
 int init();
 
+int start_service(char *host);
+
 /**
  * @brief Este servicio inserta el elemento <key, value1, value2>. El vector correspondiente al valor
  * 2 vendrá dado por la dimensión del vector (N_Value2) y el vector en si (V_value2). El servicio
