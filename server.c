@@ -23,10 +23,10 @@ key_exists(int key)
         fclose(tuples_file);
         return -1;
     }
-    char *line = malloc(MAXLINE * sizeof(char));    
-    line = fgets(line, MAXLINE, tuples_file);
+    char line[MAXLINE];
+    fgets(line, sizeof(line), tuples_file);
     int tuple_key;
-    while (line != NULL) {
+    while (strcmp(line, "") != 0) {
         int items = sscanf(line, "%d", &tuple_key);
         if (items != 1) {
             fclose(tuples_file);
@@ -36,9 +36,8 @@ key_exists(int key)
             fclose(tuples_file);
             return 1;
         }
-        line = fgets(line, MAXLINE, tuples_file);
+        strcpy(line, fgets(line, sizeof(line), tuples_file));
     }
-    free(line);
     fclose(tuples_file);
     return 0;
 }
@@ -84,21 +83,26 @@ set_tuple_1_svc(struct tuple given_tuple, void *result,  struct svc_req *rqstp)
 bool_t
 get_tuple_1_svc(int key, struct tuple *result,  struct svc_req *rqstp)
 {
+    printf("DEBUGGING POINT 1\n");
     if (key_exists(key) == 0) {
+        printf("DEBUGGING POINT 1.5a\n");
         return FALSE;
     }
 	result->key = key;
+    printf("DEBUGGING POINT 1.5b\n");
     const long MAXLINE = 4096;  // big enough number that endofline will occur before end of buffer
     FILE *tuples_file = fopen(tuples_filename, "r");
+    printf("DEBUGGING POINT 2\n");
     if (tuples_file == NULL) {
         perror("fopen");
         fclose(tuples_file);
         return FALSE;
     }
-    char *line = malloc(MAXLINE * sizeof(char));    
-    line = fgets(line, MAXLINE, tuples_file);
+    char line[MAXLINE];
+    fgets(line, sizeof(line), tuples_file);
+    printf("DEBUGGING POINT 3\n");
 	int line_key;
-    while (line != NULL) {
+    while (strcmp(line, "") != 0) {
         char str_value[MAXLINE];
         sscanf(line, "%d, %s", &line_key, str_value);
         strcpy(result->value1, strtok(str_value, ","));
@@ -110,13 +114,12 @@ get_tuple_1_svc(int key, struct tuple *result,  struct svc_req *rqstp)
             for (int i = 0; i < result->N_value2; i++) {
                 result->V_value2[i] = result->V_value2[i];
             }
-            free(line);
             fclose(tuples_file);
             return TRUE;
         }
-        line = fgets(line, MAXLINE, tuples_file);
+        fgets(line, MAXLINE, tuples_file);
     }
-    free(line);
+    printf("DEBUGGING POINT 4\n");
     fclose(tuples_file);
     return FALSE;
 }
@@ -190,6 +193,8 @@ delete_tuple_1_svc(int key, void *result,  struct svc_req *rqstp)
 int
 server_1_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
 {
-	xdr_free (xdr_result, result);
+    // commented this line because it results in a segmentation fault
+    // I souldn't need to free the result, it is an int
+	//xdr_free (xdr_result, result);
 	return 1;
 }

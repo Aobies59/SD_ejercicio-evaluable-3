@@ -24,10 +24,8 @@ LDFLAGS = -lrt -pthread -lnsl -lpthread -ltirpc
 RPCGENFLAGS = -CNM
 LIBFLAGS = -Wl,-rpath=./ -lclaves
 
-
 all:
 	@make --no-print-directory clean
-	@make --no-print-directory $(RPCGEN)
 	@make --no-print-directory $(SERVER)
 	@make --no-print-directory $(CLIENT)
 
@@ -37,6 +35,7 @@ $(RPCGEN): $(SOURCES.x)
 	@rpcgen $(RPCGENFLAGS) $(SOURCES.x)
 	@echo "generated RPC files"
 
+$(TARGETS_SVC.c) : $(RPCGEN)
 $(OBJECTS_SVC) : $(TARGETS_SVC.c) 
 
 # Target to build the server executable
