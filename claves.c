@@ -21,7 +21,7 @@ struct tuple  modify_value_1_given_tuple;
 enum clnt_stat retval_6;
 int result_6;
 int delete_key_1_key;
-enum clnt_stsat retval_7;
+enum clnt_stat retval_7;
 void *result_7;
 
 int start_service(char *host) {
@@ -129,7 +129,7 @@ int exist(int key) {
     return result_2;
 }
 
-int close_server() {
+int exit_server() {
 	retval_7 = close_server_1(&result_7, clnt);
 	if (retval_7 != RPC_SUCCESS)
 		clnt_perror (clnt, "call failed");

@@ -31,7 +31,7 @@ int correct_operation(char* operation) {
 void exit_with_error(char* operation) {
     char error_string[100];
     sprintf(error_string, "Error with operation: %s", operation);
-    close_server();
+    exit_server();
     exit(-1);
 }
 
@@ -206,7 +206,7 @@ void handle_arguments(int argc, char *argv[]) {
             if (start_service("localhost") < 0) {
                 exit(-1);
             };
-            exit(close_server());
+            exit(exit_server());
         } else if (strcmp(argv[1], "delete") == 0) {
             if (argc != 3) {
                 printf("Usage: ./client delete <key>\n");
@@ -362,5 +362,5 @@ int main (int argc, char *argv[]) {
             }
         }
     }
-    exit(close_server());
+    exit(exit_server());
 }

@@ -102,6 +102,6 @@ int exist(int key);
  * @retval 0 en caso de exito.
  * @retval -1 en caso de error.
  */
-int close_server();
+int exit_server();
 
 #endif
