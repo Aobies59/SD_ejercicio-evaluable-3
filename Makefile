@@ -25,33 +25,33 @@ RPCGENFLAGS = -CNM
 LIBFLAGS = -Wl,-rpath=./ -lclaves
 
 all:
-	@make --no-print-directory clean
-	@make --no-print-directory $(SERVER)
-	@make --no-print-directory $(CLIENT)
+	@make -s clean
+	@make -s $(SERVER)
+	@make -s $(CLIENT)
 
 # Target to generate the server executable with rpcgen
 #	@cp backup/server_server.c .
 $(RPCGEN): $(SOURCES.x)
-	@rpcgen $(RPCGENFLAGS) $(SOURCES.x)
-	@rpcgen -CNM -s tcp server.x > server_svc.c
-	@echo "generated RPC files"
+	rpcgen $(RPCGENFLAGS) $(SOURCES.x)
+	rpcgen -CNM -s tcp server.x > server_svc.c
+	echo "generated RPC files"
 
 $(TARGETS_SVC.c) : $(RPCGEN)
 $(OBJECTS_SVC) : $(TARGETS_SVC.c) 
 
 # Target to build the server executable
 $(SERVER): $(OBJECTS_SVC) $(RPCGEN)
-	@$(LINK.c) -o $(SERVER) $(OBJECTS_SVC)
-	@echo "compiled server"
+	$(LINK.c) -o $(SERVER) $(OBJECTS_SVC)
+	echo "compiled server"
 
 # Target to build the client executable, creating and using the shared library libclaves.so
 $(CLIENT): $(RPCGEN)
-	@$(LINK.c) -shared -fPIC claves.c $(TARGETS_SVC.c) $(TARGET_CLNT.c) -o libclaves.so $(CFLAGS) $(LDFLAGS)
-	@$(LINK.c) $(CFLAGS) -o $(CLIENT) $(CLIENT_SRC) $(LDFLAGS) -L$(LIB_LOCATION) $(LIBFLAGS)
-	@echo "compiled client"
+	$(LINK.c) -shared -fPIC claves.c $(TARGETS_SVC.c) $(TARGET_CLNT.c) -o libclaves.so $(CFLAGS) $(LDFLAGS)
+	$(LINK.c) $(CFLAGS) -o $(CLIENT) $(CLIENT_SRC) $(LDFLAGS) -L$(LIB_LOCATION) $(LIBFLAGS)
+	echo "compiled client"
 
 # Clean rule to remove all object files and executables
 clean:
-	@rm -f server client libclaves.so
-	@rm -f server_*
-	@rm -f server.h $(SERVER)
+	rm -f server client libclaves.so
+	rm -f server_*
+	rm -f server.h $(SERVER)

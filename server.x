@@ -5,6 +5,7 @@ const SETVER = 3;
 const GETVER = 4;
 const MODIFYVER = 5;
 const DELETEVER = 6;
+const EXITVER = 7;
 
 typedef double vector_32[32];
 
@@ -19,9 +20,10 @@ program server {
     version VERNUM {
         void init_server() = INITVER;
         int exists(int key) = EXISTVER;
-        void set_tuple(struct tuple given_tuple) = SETVER;
+        int set_tuple(struct tuple given_tuple) = SETVER;
         struct tuple get_tuple(int key) = GETVER;
-        void modify_tuple(struct tuple given_tuple) = MODIFYVER;
-        void delete_tuple(int key) = DELETEVER;
+        int modify_tuple(struct tuple given_tuple) = MODIFYVER;
+        int delete_tuple(int key) = DELETEVER;
+        void close_server() = EXITVER;
     } = 1;
 } = 1;

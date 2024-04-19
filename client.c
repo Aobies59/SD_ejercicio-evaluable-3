@@ -70,14 +70,18 @@ int handle_get() {
 }
 
 int handle_set() {
-    int key;
+    int key = -999;
     char value1[256];
     int N_Value2;
     double V_Value2[32];
 
-    printf("Input key: ");
-    scanf("%d", &key);
-
+    do {
+        printf("Input key: ");
+        scanf("%d", &key);
+        if (key == -999) {
+            printf("Error: Key must not be -999. Please enter a valid value.\n");
+        }
+    } while (key == -999);
 
     bool contains_comma;
     do {
@@ -103,7 +107,8 @@ int handle_set() {
         printf("V_Value2[%d]: ", i);
         scanf("%lf", &V_Value2[i]);
     }
-    if (set_value(key, value1, N_Value2, V_Value2) < 0) {
+    int set_value_return_value = set_value(key, value1, N_Value2, V_Value2);
+    if (set_value_return_value < 0) {
         return -1;
     }
     return 0;
@@ -117,7 +122,6 @@ int handle_delete() {
         printf("Error deleting key.\n");
         return -1;
     }
-    printf("Key deleted.\n");
     return 0;
 }
 
@@ -274,6 +278,7 @@ void handle_arguments(int argc, char *argv[]) {
         } else if (strcmp(argv[1], "modify") == 0) {
             if (argc < 6) {
                 printf("Usage: ./client modify <key> <value_1> <N_Value2> <V_Value>\n");
+                exit(1);
             }
             if (isdigit(*argv[2]) == 0) {
                 printf("Usage: ./client modify <key> <value_1> <N_Value2> <V_Value>\n");
@@ -300,6 +305,7 @@ void handle_arguments(int argc, char *argv[]) {
                 V_Value2[i] = atof(argv[5+i]);
             }
             if (start_service("localhost") < 0) {
+                perror("start_service");
                 exit(1);
             };
             sleep(0.1);
