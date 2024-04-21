@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include "claves.h"
+char *ip;
 
 int correct_operation(char* operation) {
     if (strcmp(operation, "set") == 0) {
@@ -325,7 +326,12 @@ int main (int argc, char *argv[]) {
     handle_arguments(argc, argv);
     printf("Welcome to the tuple management system, user input mode.\n");
     while (1) {
-        if (start_service("localhost") < 0) {
+        ip = getenv("IP_TUPLAS");
+        if (ip == NULL) {
+            fprintf(stderr, "IP_TUPLAS environment variable not set\n");
+            exit(-1);
+        }
+        if (start_service(ip) < 0) {
             exit(-1);
         }
         char operation[10];
