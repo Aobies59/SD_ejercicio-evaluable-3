@@ -54,4 +54,4 @@ $(CLIENT): $(RPCGEN)
 clean:
 	rm -f server client libclaves.so
 	rm -f server_*
-	rm -f server.h $(SERVER)
+	rm -f server.h $(SERVER) server.o
