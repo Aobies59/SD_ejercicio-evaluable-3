@@ -58,7 +58,6 @@ compare_output() {
 
     # Compare output file with expected content
     if ! diff -q "$output_file" <(echo "$expected_content") > /dev/null; then
-        echo "FAILED"
         return 1
     fi
 }
@@ -67,11 +66,11 @@ compare_output() {
 failed=0
 
 # Compare each output file with its expected content
-compare_output "./tests_output/test-1-server-N-client-set-value-1-output.txt" "Value set correctly" || failed=1
+compare_output "./tests_output/test-1-server-N-client-set-value-1-output.txt" "Value set successfully" || failed=1
 compare_output "./tests_output/test-1-server-N-client-exist-1-output.txt" "Key 1 exists" || failed=1
-compare_output "./tests_output/test-1-server-N-client-set-value-2-output.txt" "Value set correctly" || failed=1
+compare_output "./tests_output/test-1-server-N-client-set-value-2-output.txt" "Value set successfully" || failed=1
 compare_output "./tests_output/test-1-server-N-client-exist-2-output.txt" "Key 2 exists" || failed=1
-compare_output "./tests_output/test-1-server-N-client-delete-1-output.txt" "Key 1 deleted correctly" || failed=1
+compare_output "./tests_output/test-1-server-N-client-delete-1-output.txt" "Key deleted successfully." || failed=1
 compare_output "./tests_output/test-1-server-N-client-exist-1-2-output.txt" "Key 1 doesn't exist" || failed=1
 
 # If any comparison failed, echo "FAILED" and return

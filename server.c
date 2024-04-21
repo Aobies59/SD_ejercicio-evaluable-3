@@ -1,17 +1,24 @@
 #include "server.h"
 char *tuples_filename = "tuples.csv";
+int server_init = 0;
+
+int init_server_functionality() {
+    FILE *file = fopen(tuples_filename, "w");
+    if (file == NULL) {
+        perror("fopen");
+        return -1;
+    }
+    fclose(file);
+    return 0;
+}
 
 bool_t
 init_server_1_svc(void *result, struct svc_req *rqstp)
 {
     printf("Received INIT call\n");
-	FILE *file = fopen(tuples_filename, "w");
-    if (file == NULL) {
-        fclose(file);
-        perror("fopen");
+    if (init_server_functionality() < 0) {
         return FALSE;
     }
-    fclose(file);
     printf("INIT call completed successfully\n");
     return TRUE;
 }
@@ -20,6 +27,12 @@ init_server_1_svc(void *result, struct svc_req *rqstp)
 static int
 key_exists(int key)
 {
+    if (server_init == 0) {
+        if (init_server_functionality() < 0) {
+            return FALSE;
+        }
+        server_init = 1;
+    }
     const long MAXLINE = 4096;  // big enough number that endofline will ocurr before end of buffer
     FILE *tuples_file = fopen(tuples_filename, "r");
     if (tuples_file == NULL) {
@@ -47,6 +60,12 @@ key_exists(int key)
 bool_t
 exists_1_svc(int key, int *result,  struct svc_req *rqstp)
 {
+    if (server_init == 0) {
+        if (init_server_functionality() < 0) {
+            return FALSE;
+        }
+        server_init = 1;
+    }
     printf("Received EXISTS call\n");
     *result = key_exists(key);
     if (*result < 0) {
@@ -59,6 +78,12 @@ exists_1_svc(int key, int *result,  struct svc_req *rqstp)
 bool_t
 set_tuple_1_svc(struct tuple given_tuple, int *result,  struct svc_req *rqstp)
 {
+    if (server_init == 0) {
+        if (init_server_functionality() < 0) {
+            return FALSE;
+        }
+        server_init = 1;
+    }
     printf("Received SET call\n");
     // check if N_value2 is between 1 and 32
     if (given_tuple.N_value2 < 1 || given_tuple.N_value2 > 32) {
@@ -95,6 +120,12 @@ set_tuple_1_svc(struct tuple given_tuple, int *result,  struct svc_req *rqstp)
 bool_t
 get_tuple_1_svc(int key, struct tuple *result,  struct svc_req *rqstp)
 {
+    if (server_init == 0) {
+        if (init_server_functionality() < 0) {
+            return FALSE;
+        }
+        server_init = 1;
+    }
     printf("Received GET call\n");
     if (key_exists(key) == 0) {
         result->key = -999;
@@ -135,6 +166,12 @@ get_tuple_1_svc(int key, struct tuple *result,  struct svc_req *rqstp)
 bool_t
 modify_tuple_1_svc(struct tuple given_tuple, int *result,  struct svc_req *rqstp)
 {
+    if (server_init == 0) {
+        if (init_server_functionality() < 0) {
+            return FALSE;
+        }
+        server_init = 1;
+    }
     printf("Received MODIFY call\n");
     if (key_exists(given_tuple.key) == 0) {
         *result = -999;
@@ -180,6 +217,12 @@ modify_tuple_1_svc(struct tuple given_tuple, int *result,  struct svc_req *rqstp
 bool_t
 delete_tuple_1_svc(int key, int *result,  struct svc_req *rqstp)
 {
+    if (server_init == 0) {
+        if (init_server_functionality() < 0) {
+            return FALSE;
+        }
+        server_init = 1;
+    }
     printf("Received DELETE call\n");
     if (key_exists(key) == 0) {
         *result = -999;

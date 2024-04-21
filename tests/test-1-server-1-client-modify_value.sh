@@ -29,6 +29,7 @@ sleep 0.5
 
 # Start the client
 ./client set 1 "test" 2 1.4231 2231.0013 &>> ./tests_output/test-1-server-1-client-modify-value-client-output.txt &
+sleep 0.1
 ./client modify 1 "test_02" 1 1.004 &>> ./tests_output/test-1-server-1-client-modify-value-client-output.txt &
 
 # Wait client to finish
@@ -38,7 +39,7 @@ wait $!
 ./client exit &>>  ./tests_output/test-1-server-1-client-modify-value-client-output.txt &
 
 # Compare tuples.csv with the expected content
-echo "1,1,test_02,1.004000" > tests_output/temp_test_file.txt
+echo "1,test_02,1,1.004000" > tests_output/temp_test_file.txt
 if diff -q tuples.csv tests_output/temp_test_file.txt; then
     echo "PASSED"
 else

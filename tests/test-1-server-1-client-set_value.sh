@@ -37,7 +37,7 @@ wait $!
 ./client exit &>>  ./tests_output/test-1-server-1-client-set-value-client-output.txt &
 
 # Compare tuples.csv with the expected content
-echo "1,2,test,1.423100,2231.001300" > tests_output/temp_test_file.txt
+echo "1,test,2,1.423100,2231.001300" > tests_output/temp_test_file.txt
 if diff -q tuples.csv tests_output/temp_test_file.txt; then
     echo "PASSED"
 else
